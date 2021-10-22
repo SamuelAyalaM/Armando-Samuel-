@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Oct 20 20:53:20 2021
-
+Created on Wed Oct 20 23:53:20 2021
 """
 
 import numpy as np
@@ -20,7 +19,7 @@ def linear_solve(A, b, x_start, umbral = 0.01, max_iter = 1000):
     #Tasa de aprendizaje
     k = 0.002 #Parámetros de ajuste o hiperparámetros
     for i in range(max_iter):
-        print(x_start)
+        print(i,".-",x_start)
         x_start = x_start  - k * gradient(x_start, A, b) 
         x_sol=np.dot(A,x_start)
         error= np.subtract(x_sol,b)
@@ -28,7 +27,7 @@ def linear_solve(A, b, x_start, umbral = 0.01, max_iter = 1000):
         j=0
         for j in range(r):
             if j == r-1:
-                return x_sol
+                return x_start
             else:
                 if error[j] < umbral:
                     continue
