@@ -18,13 +18,32 @@ def transpuesta(A):
     T=np.array(t).reshape(n1,n)
     return T
 
+def multi(A,B):
+    c1=len(A_coef[0])
+    f1=len(A_coef)
+    #f2=len(b_coef)
+    c2=len(b_coef[0])   
+    C=[]
+    for i in range(f1):
+        C.append([0.0]*c2)
+    C=np.array(C).reshape(f1,c2)
+    for i in range(f1):
+        for j in range(c2):
+            for k in range(c1):
+                l=A_coef[i][k]
+                g=b_coef[k][j]
+                h=l*g
+                C[i][j]=C[i][j]+h            
+    return C
+        
 def gradient(x, A, b):
-	element_1 = np.dot(transpuesta(A),np.dot(A, x))
-	element_2 = np.dot(transpuesta(A), b)
+	element_1 = multi(transpuesta(A),multi(A, x))
+	element_2 = multi(transpuesta(A), b)
 	return element_1 - element_2
 
 A_coef = np.array([[2.0, 1.0, -3.0], [5.0, -4.0, 1.0], [1.0, -1.0, -4.0]])
-b_coef = np.array([7.0, -19.0, 4.0])
+b = [7.0, -19.0, 4.0]
+b_coef=np.array(b).reshape(3,1)
 
 x1 = np.array([1.0, 1.0, 1.0])
 
@@ -48,4 +67,3 @@ def linear_solve(A, b, x_start, umbral = 0.01, max_iter = 1000):
                     break
                 
 print(linear_solve(A_coef, b_coef, x1))
-                    
