@@ -1,0 +1,51 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Oct 20 23:53:20 2021
+
+"""
+
+import numpy as np
+
+def transpuesta(A):
+    t=[]
+    for i in range (len(A[0])):
+        t.append([])
+        for j in range(len(A)):
+            t[i].append(A[j][i])
+    
+    n=len(A)
+    n1=len(A[0])
+    T=np.array(t).reshape(n1,n)
+    return T
+
+def gradient(x, A, b):
+	element_1 = np.dot(transpuesta(A),np.dot(A, x))
+	element_2 = np.dot(transpuesta(A), b)
+	return element_1 - element_2
+
+A_coef = np.array([[2.0, 1.0, -3.0], [5.0, -4.0, 1.0], [1.0, -1.0, -4.0]])
+b_coef = np.array([7.0, -19.0, 4.0])
+
+x1 = np.array([1.0, 1.0, 1.0])
+
+def linear_solve(A, b, x_start, umbral = 0.01, max_iter = 1000):
+    #Tasa de aprendizaje
+    k = 0.002 #Parámetros de ajuste o hiperparámetros
+    for i in range(max_iter):
+        print(i,".-",x_start)
+        x_start = x_start  - k * gradient(x_start, A, b) 
+        x_sol=np.dot(A,x_start)
+        error= np.subtract(x_sol,b)
+        r=len(error)
+        j=0
+        for j in range(r):
+            if j == r-1:
+                return x_start
+            else:
+                if error[j] < umbral:
+                    continue
+                elif error[j] > umbral:
+                    break
+                
+print(linear_solve(A_coef, b_coef, x1))
+                    
